@@ -40,11 +40,17 @@ class StompHandler {
   bool get connected => _connected;
 
   void start() {
+    print('start');
     platform.connect(config).then((webSocketChannel) {
+      print('connected!');
       channel = webSocketChannel
         ..stream.listen(_onData, onError: _onError, onDone: _onDone);
       _connectToStomp();
-    }).catchError((_) => _onDone());
+    }).catchError((e) {
+      print('error!');
+      print(e); 
+      return _onDone();
+    });
   }
 
   void dispose() {
